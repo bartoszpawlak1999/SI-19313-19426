@@ -24,11 +24,11 @@ public class Wczytaj {
     public static void main(String[] args) throws IOException {
 
         JsonReader reader = null;
-            try {
-                reader = new JsonReader(new FileReader("players.json"));
-            } catch (FileNotFoundException e) {
-                e.printStackTrace();
-            }
+        try {
+            reader = new JsonReader(new FileReader("players.json"));
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
         assert reader != null;
         ArrayList<Person> lista = gson.fromJson(reader, PLAYERS_TYPE);
         //ArrayList<Rezult> HM=makeHM(lista);
@@ -37,8 +37,13 @@ public class Wczytaj {
         for(int i=0;i<NI;i++){
             int randomNr=faker.number().numberBetween(1,100);
             boolean choice=false;
-            if(randomNr>70) choice=true;
-            los(HM,lista,choice);
+            boolean choice2=false;
+            if(randomNr>70){
+                choice=true;
+            }else if (randomNr>50){
+                choice2=true;
+            }
+            los(HM,lista,choice,choice2);
         }
         writeHM(HM);
     }
@@ -110,7 +115,7 @@ public class Wczytaj {
             }
         }
     }
-    private static void los(ArrayList<Rezult> arraychoices, ArrayList<Person> arrayAll, boolean type){
+    private static void los(ArrayList<Rezult> arraychoices, ArrayList<Person> arrayAll, boolean type, boolean type2){
         ArrayList<Person> team=new ArrayList<>();
         double jakosc_teamu=0;
         double pensja_teamu=0;
@@ -122,8 +127,21 @@ public class Wczytaj {
                 random = faker.number().numberBetween(0, 100000 - 1);
                 wylosowany = arrayAll.get(random);
             } else {
-                random = faker.number().numberBetween(0, arraychoices.size()-1);
-                wylosowany = arraychoices.get(random).getTeam().get(j);
+                if(type2){
+                    int ranFromAll=faker.number().numberBetween(0,4);
+                    if(ranFromAll<1){
+                        random = faker.number().numberBetween(0, 100000 - 1);
+                        wylosowany = arrayAll.get(random);
+                    }
+                    else {
+                        random = faker.number().numberBetween(0, arraychoices.size()-1);
+                        wylosowany = arraychoices.get(random).getTeam().get(j);
+                    }
+                }
+                else {
+                    random = faker.number().numberBetween(0, arraychoices.size()-1);
+                    wylosowany = arraychoices.get(random).getTeam().get(j);
+                }
             }
             if(!teamRoles.contains(wylosowany.getPosition())) {
                 double jakosc = getJakosc(wylosowany);

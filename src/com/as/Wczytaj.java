@@ -109,7 +109,7 @@ public class Wczytaj {
                         team.clear();
                         teamRoles="";
                         pensja_teamu=0;
-                        jakosc_teamu=0;
+                        jakosc_teamu=0;//
                     }
                 }
             }
